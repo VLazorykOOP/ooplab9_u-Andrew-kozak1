@@ -63,3 +63,40 @@ struct Client {
 
         return 0;
     }
+    //завдання 2
+    #include <iostream>
+#include <algorithm>
+#include <vector>
+
+int main() {
+    std::vector<int> L = { 3, -1, 4, 5, -6, -7, 8, 9, 2 };
+
+    // Find first negative element
+    auto first_neg = std::adjacent_find(L.begin(), L.end(), [](int a, int b) {
+        return b < a;
+        });
+
+    // Insert zero after first negative element
+    if (first_neg != L.end()) {
+        L.insert(first_neg + 1, 0);
+    }
+
+    // Find last positive or negative element with same parity
+    auto last_same_parity = std::adjacent_find(L.rbegin(), L.rend(), [parity = L.back() % 2](int a, int b) {
+        return a % 2 == parity && b % 2 == parity;
+        });
+
+    // Insert zero before last same-parity element
+    if (last_same_parity != L.rend()) {
+        L.insert(last_same_parity.base(), 0);
+    }
+
+    // Print result
+    for (auto x : L) {
+        std::cout << x << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+
