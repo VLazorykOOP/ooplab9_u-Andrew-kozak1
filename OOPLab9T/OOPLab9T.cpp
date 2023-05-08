@@ -1,20 +1,65 @@
-﻿// OOPLab9T.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
-
 #include <iostream>
+#include <map>
+#include <vector>
+#include <algorithm>
+using namespace std;
 
-int main()
-{
-    std::cout << "Lab №9. STL. \n";
-}
+struct Client {
+    int id;
+    int hours;
+    int year;
+    int month;
+#include <iostream>
+#include <map>
+#include <vector>
+#include <algorithm>
+    using namespace std;
 
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
+    struct Client {
+        int id;
+        int hours;
+        int year;
+        int month;
+    };
 
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
+    int main() {
+        int n;
+        cin >> n;
+
+        map<int, vector<Client>> clients;
+
+        for (int i = 0; i < n; i++) {
+            int id, hours, year, month;
+            cin >> id >> hours >> year >> month;
+
+            clients[id].push_back({ id, hours, year, month });
+        }
+
+        vector<pair<int, int>> result;
+
+        for (auto& [id, sessions] : clients) {
+            sort(sessions.begin(), sessions.end(), [](const Client& a, const Client& b) {
+                return a.year < b.year || (a.year == b.year && a.month < b.month);
+                });
+
+            int total_months = 1;
+            int last_month = sessions[0].month;
+
+            for (int i = 1; i < sessions.size(); i++) {
+                if (sessions[i].month != last_month) {
+                    total_months++;
+                    last_month = sessions[i].month;
+                }
+            }
+
+            result.push_back({ total_months, id });
+        }
+
+        sort(result.begin(), result.end());
+
+        for (auto& [total_months, id] : result) {
+            cout << total_months << " " << id << endl;
+        }
+
+        return 0;
+    }
