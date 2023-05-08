@@ -99,4 +99,28 @@ int main() {
 
     return 0;
 }
+    // завдання 3
+    #include <iostream>
+#include <fstream>
+#include <vector>
+#include <algorithm>
+#include <iterator>
+#include <set>
+
+int main() {
+    std::string name = "output.txt";
+    std::vector<int> V = { 1, 2, 3, 4, 5, 6 };
+    std::vector<int> first_half(V.begin(), V.begin() + V.size() / 2);
+    std::vector<int> second_half(V.begin() + V.size() / 2, V.end());
+    std::set<int, std::greater<int>> first_set(first_half.begin(), first_half.end());
+    std::set<int, std::greater<int>> second_set(second_half.begin(), second_half.end());
+    std::set<int, std::greater<int>> result_set;
+    std::set_difference(second_set.begin(), second_set.end(), first_set.begin(), first_set.end(),
+        std::inserter(result_set, result_set.begin()));
+    std::ofstream outfile(name);
+    std::ostream_iterator<int> output_iterator(outfile, "\n");
+    std::copy(result_set.begin(), result_set.end(), output_iterator);
+    return 0;
+}
+
 
